@@ -2,19 +2,17 @@
 {
     public class Field
     {
-        public int CoordinateX { get; private set; }
-
-        public int CoordinateY { get; private set; }
-
-        public FigureType? Figure { get; private set; }
+        public readonly string Name;
 
         public readonly bool IsWhite;
 
-        public Field(int coordinateX, int coordinateY)
+        public FigureType? Figure { get; private set; }
+
+        public Field(string name, bool isWhite, FigureType? figure = null)
         {
-            CoordinateX = coordinateX;
-            CoordinateY = coordinateY;
-            IsWhite = coordinateX + coordinateY % 2 == 0;
+            IsWhite = isWhite;
+            Name = name;
+            Figure = figure;
         }
 
         public void SetFigure(FigureType figure)
