@@ -26,5 +26,6 @@
         }
 
         public bool HasFigure() { return this.Figure != null; }
+
     }
 }

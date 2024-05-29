@@ -83,6 +83,14 @@ namespace Objects.Src
         }
 
         public bool MakeMove(string move) {
+            var items = move.Split("-");
+            var titleFrom = items[0];
+            var titleTo = items[1];
+            if(!GetField(titleFrom).HasFigure()) return false;
+            if(GetField(titleTo).HasFigure()) return true;
+            var figure = GetField(titleFrom).Figure;
+            GetField(titleFrom).RemoveFigure();
+            GetField(titleTo).SetFigure(figure.Value);
             return true;
         }
     }
