@@ -38,7 +38,7 @@ namespace Tests
                 Assert.That(board.GetField(moveItems[0]).HasFigure, Is.False, "Pawn moved, 'field from' is free now");
                 Assert.That(board.GetField(moveItems[0]).Figure, Is.Null);
                 Assert.That(board.GetField(moveItems[1]).HasFigure, Is.True, "Pawn moved, 'field to' is set");
-                Assert.That(board.GetField(moveItems[1]).Figure, Is.EqualTo(figureExpected), "Figure");
+                Assert.That(board.GetField(moveItems[1]).Figure.Type, Is.EqualTo(figureExpected), "Figure");
             });
         }
 
@@ -82,7 +82,8 @@ namespace Tests
             Assert.Multiple(() =>
             {
                 Assert.That(isSuccess, Is.True, "Move processed");
-                Assert.That(figureNow, Is.EqualTo(figure));
+                Assert.That(figureNow.Type, Is.EqualTo(figure.Type));
+                Assert.That(figureNow.IsWhitePeace, Is.EqualTo(figure.IsWhitePeace), "Color matched");
             });
         }
     }

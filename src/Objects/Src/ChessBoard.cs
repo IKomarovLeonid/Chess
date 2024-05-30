@@ -29,23 +29,24 @@ namespace Objects.Src
         public static ChessBoard CreateInitial()
         {
             var board = new ChessBoard();
-            board.data[0, 0] = new Field("a1", false, FigureType.Rock);
-            board.data[0, 1] = new Field("b1", true, FigureType.Knight);
-            board.data[0, 2] = new Field("c1", false, FigureType.Bishop);
-            board.data[0, 3] = new Field("d1", true, FigureType.Queen);
-            board.data[0, 4] = new Field("e1", false, FigureType.King);
-            board.data[0, 5] = new Field("f1", true, FigureType.Bishop);
-            board.data[0, 6] = new Field("g1", false, FigureType.Knight);
-            board.data[0, 7] = new Field("h1", true, FigureType.Rock);
 
-            board.data[1, 0] = new Field("a2", true, FigureType.Pawn);
-            board.data[1, 1] = new Field("b2", false, FigureType.Pawn);
-            board.data[1, 2] = new Field("c2", true, FigureType.Pawn);
-            board.data[1, 3] = new Field("d2", false, FigureType.Pawn);
-            board.data[1, 4] = new Field("e2", true, FigureType.Pawn);
-            board.data[1, 5] = new Field("f2", false, FigureType.Pawn);
-            board.data[1, 6] = new Field("g2", true, FigureType.Pawn);
-            board.data[1, 7] = new Field("h2", false, FigureType.Pawn);
+            board.data[0, 0] = new Field("a1", false, new Figure(FigureType.Rock, true));
+            board.data[0, 1] = new Field("b1", true, new Figure(FigureType.Knight, true));
+            board.data[0, 2] = new Field("c1", false, new Figure(FigureType.Bishop, true));
+            board.data[0, 3] = new Field("d1", true, new Figure(FigureType.Queen, true));
+            board.data[0, 4] = new Field("e1", false, new Figure(FigureType.King, true));
+            board.data[0, 5] = new Field("f1", true, new Figure(FigureType.Bishop, true));
+            board.data[0, 6] = new Field("g1", false, new Figure(FigureType.Knight, true));
+            board.data[0, 7] = new Field("h1", true, new Figure(FigureType.Rock, true));
+
+            board.data[1, 0] = new Field("a2", true, new Figure(FigureType.Pawn, true));
+            board.data[1, 1] = new Field("b2", false, new Figure(FigureType.Pawn, true));
+            board.data[1, 2] = new Field("c2", true, new Figure(FigureType.Pawn, true));
+            board.data[1, 3] = new Field("d2", false, new Figure(FigureType.Pawn, true));
+            board.data[1, 4] = new Field("e2", true, new Figure(FigureType.Pawn, true));
+            board.data[1, 5] = new Field("f2", false, new Figure(FigureType.Pawn, true));
+            board.data[1, 6] = new Field("g2", true, new Figure(FigureType.Pawn, true));
+            board.data[1, 7] = new Field("h2", false, new Figure(FigureType.Pawn, true));
 
             board.data[2, 0] = new Field("a3", false);
             board.data[2, 1] = new Field("b3", true);
@@ -65,6 +66,42 @@ namespace Objects.Src
             board.data[3, 6] = new Field("g4", true);
             board.data[3, 7] = new Field("h4", false);
 
+            board.data[4, 0] = new Field("a5", false);
+            board.data[4, 1] = new Field("b5", true);
+            board.data[4, 2] = new Field("c5", false);
+            board.data[4, 3] = new Field("d5", true);
+            board.data[4, 4] = new Field("e5", false);
+            board.data[4, 5] = new Field("f5", true);
+            board.data[4, 6] = new Field("g5", false);
+            board.data[4, 7] = new Field("h5", true);
+
+            board.data[5, 0] = new Field("a6", true);
+            board.data[5, 1] = new Field("b6", false);
+            board.data[5, 2] = new Field("c6", true);
+            board.data[5, 3] = new Field("d6", false);
+            board.data[5, 4] = new Field("e6", true);
+            board.data[5, 5] = new Field("f6", false);
+            board.data[5, 6] = new Field("g6", true);
+            board.data[5, 7] = new Field("h6", false);
+
+            board.data[6, 0] = new Field("a7", false, new Figure(FigureType.Pawn, false));
+            board.data[6, 1] = new Field("b7", true, new Figure(FigureType.Pawn, false));
+            board.data[6, 2] = new Field("c7", false, new Figure(FigureType.Pawn, false));
+            board.data[6, 3] = new Field("d7", true, new Figure(FigureType.Pawn, false));
+            board.data[6, 4] = new Field("e7", false, new Figure(FigureType.Pawn, false));
+            board.data[6, 5] = new Field("f7", true, new Figure(FigureType.Pawn, false));
+            board.data[6, 6] = new Field("g7", false, new Figure(FigureType.Pawn, false));
+            board.data[6, 7] = new Field("h7", true, new Figure(FigureType.Pawn, false));
+
+            board.data[7, 0] = new Field("a8", true, new Figure(FigureType.Rock, false));
+            board.data[7, 1] = new Field("b8", false, new Figure(FigureType.Knight, false));
+            board.data[7, 2] = new Field("c8", true, new Figure(FigureType.Bishop, false));
+            board.data[7, 3] = new Field("d8", false, new Figure(FigureType.Queen, false));
+            board.data[7, 4] = new Field("e8", true, new Figure(FigureType.King, false));
+            board.data[7, 5] = new Field("f8", false, new Figure(FigureType.Bishop, false));
+            board.data[7, 6] = new Field("g8", true, new Figure(FigureType.Knight, false));
+            board.data[7, 7] = new Field("h8", false, new Figure(FigureType.Rock, false));
+
             return board;
         }
 
@@ -83,15 +120,39 @@ namespace Objects.Src
         }
 
         public bool MakeMove(string move) {
-            var items = move.Split("-");
+            // simple move or capture
+            var divider = move.Contains("-") ? "-" : "x";
+            var items = move.Split(divider);
             var titleFrom = items[0];
             var titleTo = items[1];
-            if(!GetField(titleFrom).HasFigure()) return false;
-            if(GetField(titleTo).HasFigure()) return true;
+            if (!GetField(titleFrom).HasFigure()) return false;
             var figure = GetField(titleFrom).Figure;
+            switch (figure.Type)
+            {
+                case FigureType.Pawn:
+                    var nameFrom = titleFrom[0];
+                    var nameTo = titleTo[0];    
+                    if(nameFrom != nameTo) return false;
+                    var fieldFrom = titleFrom[1];
+                    var fieldTo = titleTo[1];
+                    if (figure.IsWhitePeace)
+                    {
+                        if(fieldTo <= fieldFrom) return false;
+                        if(fieldFrom == 2 && fieldTo > 4) return false;
+                        if (fieldFrom != 2 && fieldTo - fieldFrom > 1) return false;
+                    }
+                    else
+                    {
+                        if (fieldTo >= fieldFrom) return false;
+                        if (fieldFrom == 7 && fieldTo < 5) return false;
+                        if (fieldFrom != 7 && fieldFrom - fieldTo > 1) return false;
+                    }
+                    break;
+            }
             GetField(titleFrom).RemoveFigure();
-            GetField(titleTo).SetFigure(figure.Value);
+            GetField(titleTo).SetFigure(figure);
             return true;
+
         }
     }
 }

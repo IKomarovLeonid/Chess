@@ -6,16 +6,16 @@
 
         public readonly bool IsWhite;
 
-        public FigureType? Figure { get; private set; }
+        public Figure Figure { get; private set; }
 
-        public Field(string name, bool isWhite, FigureType? figure = null)
+        public Field(string name, bool isWhite, Figure figure = null)
         {
             IsWhite = isWhite;
             Name = name;
             Figure = figure;
         }
 
-        public void SetFigure(FigureType figure)
+        public void SetFigure(Figure figure)
         {
             this.Figure = figure;
         }
