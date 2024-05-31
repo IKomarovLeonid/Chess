@@ -11,6 +11,8 @@
             this.Type = type;
             this.IsWhitePeace = isWhitePeace;
         }
+
+
     }
 
     public enum FigureType

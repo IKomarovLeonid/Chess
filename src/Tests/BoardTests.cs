@@ -21,10 +21,14 @@ namespace Tests
         }
 
         [TestCase("e2-e4", FigureType.Pawn)]
-        [TestCase("d2-d3", FigureType.Pawn)]
-        [TestCase("g1-f3", FigureType.Knight)]
+        [TestCase("e2-e3", FigureType.Pawn)]
+        [TestCase("c7-c5", FigureType.Pawn)]
+        [TestCase("c7-c6", FigureType.Pawn)]
         [TestCase("b1-c3", FigureType.Knight)]
-        [Description("Make simple valid move and check fields after")]
+        [TestCase("b1-a3", FigureType.Knight)]
+        [TestCase("g8-f6", FigureType.Knight)]
+        [TestCase("b8-c6", FigureType.Knight)]
+        [Description("Make simple moves avaliable from initial position")]
         public void Move_Valid_CheckBoard(string move, FigureType figureExpected)
         {
             var moveItems = move.Split('-'); 
@@ -84,6 +88,90 @@ namespace Tests
                 Assert.That(isSuccess, Is.True, "Move processed");
                 Assert.That(figureNow.Type, Is.EqualTo(figure.Type));
                 Assert.That(figureNow.IsWhitePeace, Is.EqualTo(figure.IsWhitePeace), "Color matched");
+            });
+        }
+
+        [TestCase("d4-f5")]
+        [TestCase("a1-b3")]
+        [TestCase("a1-c2")]
+        [TestCase("d4-e6")]
+        [TestCase("d4-e2")]
+        [TestCase("d4-c2")]
+        [TestCase("d4-b5")]
+        [TestCase("d4-c6")]
+        [TestCase("d4-c2")]
+        [TestCase("h3-g5")]
+        [TestCase("h3-f4")]
+        [TestCase("h3-f2")]
+        [TestCase("h3-g1")]
+        [Description("Perform success knight move")]
+        public void Move_Knight_Success(string move)
+        {
+            var moveItems = move.Split('-');
+            var board = ChessBoard.CreateOnlyBoard();
+
+            board.SetFigure(new Figure(FigureType.Knight, true), moveItems[0]);
+            
+            var result = board.MakeMove(move);
+
+            var fieldInitialAfterMove = board.GetField(moveItems[0]);
+            var fieldAfterMove = board.GetField(moveItems[1]);
+
+            Assert.Multiple(() =>
+            {
+                Assert.True(result, "Move was processed");
+                Assert.False(fieldInitialAfterMove.HasFigure(), "Initial field is empty after move");
+                Assert.True(fieldAfterMove.HasFigure(), "Target field is NOT empty after move");
+            });
+        }
+
+        [TestCase("a1-h8")]
+        [TestCase("f1-c4")]
+        [TestCase("g2-b7")]
+        [TestCase("f6-d4")]
+        [TestCase("c5-f2")]
+        [Description("Perform success bishop move")]
+        public void Move_Bishop_Success(string move)
+        {
+            var moveItems = move.Split('-');
+            var board = ChessBoard.CreateOnlyBoard();
+
+            board.SetFigure(new Figure(FigureType.Bishop, true), moveItems[0]);
+
+            var result = board.MakeMove(move);
+
+            var fieldInitialAfterMove = board.GetField(moveItems[0]);
+            var fieldAfterMove = board.GetField(moveItems[1]);
+
+            Assert.Multiple(() =>
+            {
+                Assert.True(result, "Move was processed");
+                Assert.False(fieldInitialAfterMove.HasFigure(), "Initial field is empty after move");
+                Assert.True(fieldAfterMove.HasFigure(), "Target field is NOT empty after move");
+            });
+        }
+
+        [TestCase("d4-c5")]
+        [TestCase("a2-c2")]
+        [TestCase("h1-a8")]
+        [Description("Invalid knight move")]
+        public void Move_Knight_Invalid(string move)
+        {
+            var moveItems = move.Split('-');
+            var board = ChessBoard.CreateOnlyBoard();
+
+            board.SetFigure(new Figure(FigureType.Knight, true), moveItems[0]);
+
+            var result = board.MakeMove(move);
+
+            var fieldInitialAfterMove = board.GetField(moveItems[0]);
+            var fieldAfterMove = board.GetField(moveItems[1]);
+
+            Assert.Multiple(() =>
+            {
+                Assert.False(result, "Move failed");
+                Assert.True(fieldInitialAfterMove.HasFigure(), "Initial field is same as before move");
+                Assert.False(fieldAfterMove.HasFigure(), "Target field is not affected");
             });
         }
     }
