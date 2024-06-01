@@ -3,94 +3,14 @@ using Objects.Src;
 
 namespace Tests
 {
-    internal class BoardTests : BaseTests
+    internal class MovesTests : BaseTests
     {
         [SetUp]
         public void Setup()
         {
-            board = ChessBoard.CreateInitial();
+            board = ChessBoard.CreateOnlyBoard();
         }
 
-
-        [Test]
-        [Description("Check initial chess board state")]
-        public void Board_InitializeDefault()
-        {
-            Assert.Multiple(() =>
-            {
-                Assert.That(board.GetField("a1").IsWhite, Is.False, "A1 is black field");
-                Assert.That(board.GetField("a1").HasFigure, Is.True, "A1 has rock");
-                Assert.That(board.GetField("e4").IsWhite, Is.True, "E4 is white field");
-                Assert.That(board.GetField("e4").HasFigure, Is.False, "E4 has not any figure");
-            });
-        }
-
-        [TestCase("e2-e4", FigureType.Pawn)]
-        [TestCase("e2-e3", FigureType.Pawn)]
-        [TestCase("c7-c5", FigureType.Pawn)]
-        [TestCase("c7-c6", FigureType.Pawn)]
-        [TestCase("b1-c3", FigureType.Knight)]
-        [TestCase("b1-a3", FigureType.Knight)]
-        [TestCase("g8-f6", FigureType.Knight)]
-        [TestCase("b8-c6", FigureType.Knight)]
-        [Description("Make simple moves avaliable from initial position")]
-        public void Move_Valid_CheckBoard(string move, FigureType figureExpected)
-        {
-            var moveItems = move.Split('-'); 
-
-            var isSuccess = board.MakeMove(move);
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(isSuccess, Is.True, "Move was performed successfully");
-                Assert.That(board.GetField(moveItems[0]).HasFigure, Is.False, "Pawn moved, 'field from' is free now");
-                Assert.That(board.GetField(moveItems[0]).Figure, Is.Null);
-                Assert.That(board.GetField(moveItems[1]).HasFigure, Is.True, "Pawn moved, 'field to' is set");
-                Assert.That(board.GetField(moveItems[1]).Figure.Type, Is.EqualTo(figureExpected), "Figure");
-            });
-        }
-
-        [TestCase("e2-d3")]
-        [TestCase("e2-e5")]
-        [TestCase("e2-e1")]
-        [Description("Validate intial pawns moves")]
-        public void Move_InvalidPawnMove(string move)
-        {
-            var moveItems = move.Split('-');
-
-            var fieldInitial = board.GetField(moveItems[0]);
-            var fieldAfter = board.GetField(moveItems[1]);
-
-            var isSuccess = board.MakeMove(move);
-
-            var fieldNow = board.GetField(moveItems[0]);
-            var fieldAfterNow = board.GetField(moveItems[1]);
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(isSuccess, Is.False, "Move failed");
-                Assert.That(fieldInitial.Figure, Is.EqualTo(fieldNow.Figure), "No affection");
-                Assert.That(fieldAfterNow.Figure, Is.EqualTo(fieldAfter.Figure), "No affection");
-            });
-        }
-
-        [Test]
-        [Description("Simple valid pawn capture from initial position")]
-        public void Move_PawnCapture_Success()
-        {
-            var figure = board.GetField("e2").Figure;
-            board.MakeMove("e2-e4");
-            board.MakeMove("d7-d5");
-            var isSuccess = board.MakeMove("e4xd5");
-            var figureNow = board.GetField("d5").Figure;
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(isSuccess, Is.True, "Move processed");
-                Assert.That(figureNow.Type, Is.EqualTo(figure.Type));
-                Assert.That(figureNow.IsWhitePeace, Is.EqualTo(figure.IsWhitePeace), "Color matched");
-            });
-        }
 
         [TestCase("d4-f5")]
         [TestCase("a1-b3")]
@@ -109,10 +29,9 @@ namespace Tests
         public void Move_Knight_Success(string move)
         {
             var moveItems = move.Split('-');
-            var board = ChessBoard.CreateOnlyBoard();
 
             board.SetFigure(new Figure(FigureType.Knight, true), moveItems[0]);
-            
+
             var result = board.MakeMove(move);
 
             var fieldInitialAfterMove = board.GetField(moveItems[0]);
@@ -135,7 +54,6 @@ namespace Tests
         public void Move_Bishop_Success(string move)
         {
             var moveItems = move.Split('-');
-            var board = ChessBoard.CreateOnlyBoard();
             board.SetFigure(new Figure(FigureType.Bishop, true), moveItems[0]);
 
             var result = board.MakeMove(move);
@@ -158,7 +76,6 @@ namespace Tests
         public void Move_Knight_Invalid(string move)
         {
             var moveItems = move.Split('-');
-            var board = ChessBoard.CreateOnlyBoard();
 
             board.SetFigure(new Figure(FigureType.Knight, true), moveItems[0]);
 
@@ -184,7 +101,6 @@ namespace Tests
         public void Move_Rock_Success(string move)
         {
             var moveItems = move.Split('-');
-            var board = ChessBoard.CreateOnlyBoard();
             board.SetFigure(new Figure(FigureType.Rock, true), moveItems[0]);
 
             var result = board.MakeMove(move);
@@ -212,7 +128,6 @@ namespace Tests
         public void Move_Queen_Success(string move)
         {
             var moveItems = move.Split('-');
-            var board = ChessBoard.CreateOnlyBoard();
             board.SetFigure(new Figure(FigureType.Queen, true), moveItems[0]);
 
             var result = board.MakeMove(move);
@@ -240,7 +155,6 @@ namespace Tests
         public void Move_King_Success(string move)
         {
             var moveItems = move.Split('-');
-            var board = ChessBoard.CreateOnlyBoard();
             board.SetFigure(new Figure(FigureType.King, true), moveItems[0]);
 
             var result = board.MakeMove(move);

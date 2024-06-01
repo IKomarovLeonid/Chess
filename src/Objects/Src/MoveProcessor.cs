@@ -46,10 +46,15 @@ namespace Objects.Src
                     return rowsDiff == 2 && diff == 1 || rowsDiff == 1 && diff == 2;
                 case FigureType.Bishop:
                     return rowsDiff == diff;
-                    
-            }
+                case FigureType.Rock:
+                    return rowName == rowMameTo && diff > 0 || rowName != rowMameTo && diff == 0;
+                case FigureType.Queen:
+                    return rowName == rowMameTo && diff > 0 || rowName != rowMameTo && diff == 0 || rowsDiff == diff;
+                case FigureType.King:
+                    return rowName == rowMameTo && rowsDiff <= 1 || rowName != rowMameTo && diff <= 1;
 
-            return false;
+            }
+            throw new ArgumentException($"Unknown figure '{figure.Type}'");
         }
 
         private static bool IsAdjancedTitle(char title, char titleTo)
