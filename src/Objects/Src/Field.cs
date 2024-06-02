@@ -4,13 +4,13 @@
     {
         public readonly string Name;
 
-        public readonly bool IsWhite;
+        private readonly bool isWhite;
 
         public Figure Figure { get; private set; }
 
         public Field(string name, bool isWhite, Figure figure = null)
         {
-            IsWhite = isWhite;
+            this.isWhite = isWhite;
             Name = name;
             Figure = figure;
         }
@@ -26,6 +26,8 @@
         }
 
         public bool HasFigure() { return this.Figure != null; }
+
+        public bool IsWhiteField() { return this.isWhite; }
 
     }
 }

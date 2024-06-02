@@ -169,5 +169,29 @@ namespace Tests
                 Assert.True(fieldAfterMove.HasFigure(), "Target field is NOT empty after move");
             });
         }
+
+        [Test]
+        [Description("Pawn can't be moved -> blockade")]
+        public void Move_Pawn_Blocade()
+        {
+            board.SetFigure(new Figure(FigureType.Pawn, true), "d3");
+            board.SetFigure(new Figure(FigureType.Pawn, false), "d4");
+
+            var result = board.MakeMove("d3-d4");
+
+            var d3 = board.GetField("d3");
+            var d4 = board.GetField("d4");
+
+            Assert.Multiple(() =>
+            {
+                Assert.False(result, "Move was NOT processed");
+                Assert.True(d3.HasFigure(), "d3 has figure");
+                Assert.True(d4.HasFigure(), "d4 has figure");
+                Assert.That(d3.Figure.Type, Is.EqualTo(FigureType.Pawn), "d3 pawn");
+                Assert.That(d4.Figure.Type, Is.EqualTo(FigureType.Pawn), "d4 pawn");
+                Assert.False(d4.Figure.IsWhitePeace, "d3 pawn white");
+                Assert.True(d3.Figure.IsWhitePeace, "d4 pawn white");
+            });
+        }
     }
 }
