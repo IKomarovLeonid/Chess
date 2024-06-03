@@ -139,31 +139,48 @@ namespace Tests
                 Assert.False(e.HasFigure());
                 Assert.False(h.HasFigure());
                 Assert.That(g.Figure.GetFigureType(), Is.EqualTo(FigureType.King));
-                Assert.That(f.Figure.GetFigureType(), Is.EqualTo(FigureType.Rock));
+                Assert.That(f.Figure.GetFigureType(), Is.EqualTo(FigureType.Rook));
             });
         }
 
-        [TestCase("0-0-0")]
-        [Description("Perform castle king side valid")]
-        public void Board_Castle_QueenSide(string move)
+        [TestCase("0-0-0", true)]
+        [TestCase("0-0-0", false)]
+        [Description("Perform castle queen side valid")]
+        public void Board_Castle_QueenSide(string move, bool isWhileScenario)
         {
-            board.MakeMove("d2-d4");
-            board.MakeMove("d7-d5");
-            board.MakeMove("b1-c3");
-            board.MakeMove("b8-c6");
-            board.MakeMove("c1-f4");
-            board.MakeMove("e7-e6");
-            board.MakeMove("d1-d2");
-            board.MakeMove("g8-f6");
+            if (isWhileScenario)
+            {
+                board.MakeMove("d2-d4");
+                board.MakeMove("d7-d5");
+                board.MakeMove("b1-c3");
+                board.MakeMove("b8-c6");
+                board.MakeMove("c1-f4");
+                board.MakeMove("e7-e6");
+                board.MakeMove("d1-d2");
+                board.MakeMove("g8-f6");
+            }
+            else
+            {
+                board.MakeMove("d2-d4");
+                board.MakeMove("d7-d5");
+                board.MakeMove("b1-c3");
+                board.MakeMove("b8-c6");
+                board.MakeMove("c1-f4");
+                board.MakeMove("c8-f5");
+                board.MakeMove("d1-d2");
+                board.MakeMove("d7-d6");
+                board.MakeMove("g2-g3");
+            }
 
             // act
             var result = board.MakeMove(move);
+            var row = isWhileScenario ? "1" : "8";
             // assert
-            var c = board.GetField("c1");
-            var d = board.GetField("d1");
-            var e = board.GetField("e1");
-            var a = board.GetField("a1");
-            var b = board.GetField("b1");
+            var c = board.GetField($"c{row}");
+            var d = board.GetField($"d{row}");
+            var e = board.GetField($"e{row}");
+            var a = board.GetField($"a{row}");
+            var b = board.GetField($"b{row}");
 
             Assert.Multiple(() =>
             {
@@ -174,7 +191,7 @@ namespace Tests
                 Assert.False(a.HasFigure());
                 Assert.False(b.HasFigure());
                 Assert.That(c.Figure.GetFigureType(), Is.EqualTo(FigureType.King));
-                Assert.That(d.Figure.GetFigureType(), Is.EqualTo(FigureType.Rock));
+                Assert.That(d.Figure.GetFigureType(), Is.EqualTo(FigureType.Rook));
             });
         }
 

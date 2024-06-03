@@ -7,6 +7,8 @@ namespace Objects.Src
     {
         private Field[,] data = new Field[8, 8];
 
+        private bool isWhiteMove = true;
+
         private ChessBoard() {
             
         }
@@ -30,14 +32,14 @@ namespace Objects.Src
         {
             var board = CreateOnlyBoard();
 
-            board.GetField("a1").SetFigure(new Figure(FigureType.Rock, true));
+            board.GetField("a1").SetFigure(new Figure(FigureType.Rook, true));
             board.GetField("b1").SetFigure(new Figure(FigureType.Knight, true));
             board.GetField("c1").SetFigure(new Figure(FigureType.Bishop, true));
             board.GetField("d1").SetFigure(new Figure(FigureType.Queen, true));
             board.GetField("e1").SetFigure(new Figure(FigureType.King, true));
             board.GetField("f1").SetFigure(new Figure(FigureType.Bishop, true));
             board.GetField("g1").SetFigure(new Figure(FigureType.Knight, true));
-            board.GetField("h1").SetFigure(new Figure(FigureType.Rock, true));
+            board.GetField("h1").SetFigure(new Figure(FigureType.Rook, true));
 
             board.GetField("a2").SetFigure(new Figure(FigureType.Pawn, true));
             board.GetField("b2").SetFigure(new Figure(FigureType.Pawn, true));
@@ -58,14 +60,14 @@ namespace Objects.Src
             board.GetField("h7").SetFigure(new Figure(FigureType.Pawn, false));
 
 
-            board.GetField("a8").SetFigure(new Figure(FigureType.Rock, false));
+            board.GetField("a8").SetFigure(new Figure(FigureType.Rook, false));
             board.GetField("b8").SetFigure(new Figure(FigureType.Knight, false));
             board.GetField("c8").SetFigure(new Figure(FigureType.Bishop, false));
             board.GetField("d8").SetFigure(new Figure(FigureType.Queen, false));
             board.GetField("e8").SetFigure(new Figure(FigureType.King, false));
             board.GetField("f8").SetFigure(new Figure(FigureType.Bishop, false));
             board.GetField("g8").SetFigure(new Figure(FigureType.Knight, false));
-            board.GetField("h8").SetFigure(new Figure(FigureType.Rock, false));
+            board.GetField("h8").SetFigure(new Figure(FigureType.Rook, false));
 
             return board;
         }
@@ -164,8 +166,12 @@ namespace Objects.Src
         }
 
         public bool MakeMove(string move) {
-            // simple move or capture
-            if (move.Contains("0")) return this.ProcessCastle(move, true);
+            // is castle
+            if (move.Contains("0")) {
+                var isProcessed = this.ProcessCastle(move, this.isWhiteMove);
+                if(isProcessed) this.isWhiteMove = ! this.isWhiteMove;
+                return isProcessed;
+            }
 
             var divider = move.Contains("-") ? "-" : "x";
             var items = move.Split(divider);
@@ -184,6 +190,7 @@ namespace Objects.Src
             {
                 SetFigure(figure, titleTo);
                 RemoveFigure(titleFrom);
+                this.isWhiteMove = !this.isWhiteMove;
                 return true;
             }
             else return false;
@@ -214,7 +221,7 @@ namespace Objects.Src
                 var g = GetField($"g{row}");
                 var h = GetField($"h{row}");
                 if (!e.HasFigure() || !e.Figure.IsKing()) return false;
-                if (!h.HasFigure() || !h.Figure.IsRock()) return false;
+                if (!h.HasFigure() || !h.Figure.IsRook()) return false;
                 if (g.HasFigure() || f.HasFigure()) return false;
                 var rockPeace = h.Figure;
                 var kingPeace = e.Figure;
@@ -232,7 +239,7 @@ namespace Objects.Src
             var b = GetField($"b{row}");
             var a = GetField($"a{row}");
             if (!e.HasFigure() || !e.Figure.IsKing()) return false;
-            if (!a.HasFigure() || !a.Figure.IsRock()) return false;
+            if (!a.HasFigure() || !a.Figure.IsRook()) return false;
             if (d.HasFigure() || c.HasFigure() || b.HasFigure()) return false;
             var rock = a.Figure;
             var king = e.Figure;

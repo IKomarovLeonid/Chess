@@ -101,7 +101,7 @@ namespace Tests
         public void Move_Rock_Success(string move)
         {
             var moveItems = move.Split('-');
-            board.SetFigure(new Figure(FigureType.Rock, true), moveItems[0]);
+            board.SetFigure(new Figure(FigureType.Rook, true), moveItems[0]);
 
             var result = board.MakeMove(move);
 

@@ -1,9 +1,29 @@
 ﻿using System;
+using System.Linq;
 
 namespace Objects.Src
 {
     internal class MoveProcessor
     {
+        private readonly ChessBoard _board;
+
+        public MoveProcessor(ChessBoard board)
+        {
+            _board = board;
+        }
+
+        public bool MakeMove(string move)
+        {
+            if (!IsValidMove(move)) return false;
+
+            return true;
+        }
+
+
+        private bool IsCastle(string move) => move.Contains("0");
+
+        private bool IsValidMove(string move) => move.Count(t => t == '-') == 1;
+
         public static bool IsPossibleMove(string titleFrom, string titleTo, Figure figure, bool isCaptureMove)
         {
             var rowName = titleFrom[0];
@@ -46,7 +66,7 @@ namespace Objects.Src
                     return rowsDiff == 2 && diff == 1 || rowsDiff == 1 && diff == 2;
                 case FigureType.Bishop:
                     return rowsDiff == diff;
-                case FigureType.Rock:
+                case FigureType.Rook:
                     return rowName == rowMameTo && diff > 0 || rowName != rowMameTo && diff == 0;
                 case FigureType.Queen:
                     return rowName == rowMameTo && diff > 0 || rowName != rowMameTo && diff == 0 || rowsDiff == diff;

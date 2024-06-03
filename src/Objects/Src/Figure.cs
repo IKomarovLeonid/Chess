@@ -16,7 +16,7 @@
 
         public bool IsBishop() => this.Type == FigureType.Bishop;
 
-        public bool IsRock() => this.Type == FigureType.Rock;
+        public bool IsRook() => this.Type == FigureType.Rook;
 
         public bool IsQueen() => this.Type == FigureType.Queen;
 
@@ -33,7 +33,7 @@
         Pawn,
         Bishop,
         Knight,
-        Rock,
+        Rook,
         Queen,
         King
     }
