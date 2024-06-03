@@ -2,7 +2,7 @@
 {
     public class Figure
     {
-        public readonly FigureType Type;
+        private readonly FigureType Type;
 
         public readonly bool IsWhitePeace;
 
@@ -12,6 +12,19 @@
             this.IsWhitePeace = isWhitePeace;
         }
 
+        public bool IsPawn() => this.Type == FigureType.Pawn;
+
+        public bool IsBishop() => this.Type == FigureType.Bishop;
+
+        public bool IsRock() => this.Type == FigureType.Rock;
+
+        public bool IsQueen() => this.Type == FigureType.Queen;
+
+        public bool IsKing() => this.Type == FigureType.King;
+
+        public bool IsKnight() => this.Type == FigureType.Knight;
+
+        public FigureType GetFigureType() => this.Type;
 
     }
 

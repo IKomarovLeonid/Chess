@@ -51,7 +51,7 @@ namespace Tests
                 Assert.That(board.GetField(moveItems[0]).HasFigure, Is.False, "Pawn moved, 'field from' is free now");
                 Assert.That(board.GetField(moveItems[0]).Figure, Is.Null);
                 Assert.That(board.GetField(moveItems[1]).HasFigure, Is.True, "Pawn moved, 'field to' is set");
-                Assert.That(board.GetField(moveItems[1]).Figure.Type, Is.EqualTo(figureExpected), "Figure");
+                Assert.That(board.GetField(moveItems[1]).Figure.GetFigureType(), Is.EqualTo(figureExpected), "Figure");
             });
         }
 
@@ -92,29 +92,44 @@ namespace Tests
             Assert.Multiple(() =>
             {
                 Assert.That(isSuccess, Is.True, "Move processed");
-                Assert.That(figureNow.Type, Is.EqualTo(figure.Type));
+                Assert.That(figureNow.GetFigureType(), Is.EqualTo(figure.GetFigureType()));
                 Assert.That(figureNow.IsWhitePeace, Is.EqualTo(figure.IsWhitePeace), "Color matched");
             });
         }
 
-        [TestCase("0-0")]
+        [TestCase("0-0", true)]
+        [TestCase("0-0", false)]
         [Description("Perform castle king side valid")]
-        public void Board_Castle_KingSide(string move)
+        public void Board_Castle_KingSide(string move, bool whitePeacesScenario)
         {
-            board.MakeMove("e2-e4");
-            board.MakeMove("e7-e5");
-            board.MakeMove("g1-f3");
-            board.MakeMove("b8-c6");
-            board.MakeMove("f1-c4");
-            board.MakeMove("d7-d6");
+            if (whitePeacesScenario)
+            {
+                board.MakeMove("e2-e4");
+                board.MakeMove("e7-e5");
+                board.MakeMove("g1-f3");
+                board.MakeMove("b8-c6");
+                board.MakeMove("f1-c4");
+                board.MakeMove("d7-d6");
+            }
+            else
+            {
+                board.MakeMove("e2-e4");
+                board.MakeMove("e7-e5");
+                board.MakeMove("g1-f3");
+                board.MakeMove("g8-f6");
+                board.MakeMove("f1-c4");
+                board.MakeMove("f8-c5");
+                board.MakeMove("0-0");
+            }
 
             // act
             var result = board.MakeMove(move);
+            var row = whitePeacesScenario ? "1" : "8";
             // assert
-            var g = board.GetField("g1");
-            var f = board.GetField("f1");
-            var e = board.GetField("e1");
-            var h = board.GetField("h1");
+            var g = board.GetField($"g{row}");
+            var f = board.GetField($"f{row}");
+            var e = board.GetField($"e{row}");
+            var h = board.GetField($"h{row}");
 
             Assert.Multiple(() =>
             {
@@ -123,8 +138,8 @@ namespace Tests
                 Assert.True(f.HasFigure());
                 Assert.False(e.HasFigure());
                 Assert.False(h.HasFigure());
-                Assert.That(g.Figure.Type, Is.EqualTo(FigureType.King));
-                Assert.That(f.Figure.Type, Is.EqualTo(FigureType.Rock));
+                Assert.That(g.Figure.GetFigureType(), Is.EqualTo(FigureType.King));
+                Assert.That(f.Figure.GetFigureType(), Is.EqualTo(FigureType.Rock));
             });
         }
 
@@ -158,8 +173,8 @@ namespace Tests
                 Assert.False(e.HasFigure());
                 Assert.False(a.HasFigure());
                 Assert.False(b.HasFigure());
-                Assert.That(c.Figure.Type, Is.EqualTo(FigureType.King));
-                Assert.That(d.Figure.Type, Is.EqualTo(FigureType.Rock));
+                Assert.That(c.Figure.GetFigureType(), Is.EqualTo(FigureType.King));
+                Assert.That(d.Figure.GetFigureType(), Is.EqualTo(FigureType.Rock));
             });
         }
 

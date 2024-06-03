@@ -15,7 +15,7 @@ namespace Objects.Src
             var rowsDiff = Math.Abs(rowName - rowMameTo);
             var isAdjanced = IsAdjancedTitle(rowName, rowMameTo);
 
-            switch (figure.Type)
+            switch (figure.GetFigureType())
             {
                 case FigureType.Pawn:
                     if (!isSameRowName)
@@ -54,7 +54,7 @@ namespace Objects.Src
                     return rowName == rowMameTo && rowsDiff <= 1 || rowName != rowMameTo && diff <= 1;
 
             }
-            throw new ArgumentException($"Unknown figure '{figure.Type}'");
+            throw new ArgumentException($"Unknown figure '{figure.GetFigureType()}'");
         }
 
         private static bool IsAdjancedTitle(char title, char titleTo)
