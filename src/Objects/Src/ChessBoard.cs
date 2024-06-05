@@ -188,6 +188,7 @@ namespace Objects.Src
             var isPossibleMove = MoveProcessor.IsPossibleMove(titleFrom, titleTo, figure, isCapture);
             if (isPossibleMove)
             {
+                if(figure.IsPawn() && GetField(titleTo).HasFigure() && titleFrom[0] == titleTo[0]) return false;
                 SetFigure(figure, titleTo);
                 RemoveFigure(titleFrom);
                 this.isWhiteMove = !this.isWhiteMove;
