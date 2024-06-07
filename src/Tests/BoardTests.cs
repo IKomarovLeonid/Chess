@@ -184,6 +184,7 @@ namespace Tests
 
             Assert.Multiple(() =>
             {
+
                 Assert.That(result, Is.True, "Move processed");
                 Assert.True(c.HasFigure());
                 Assert.True(d.HasFigure());
