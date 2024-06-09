@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 using Objects.Src;
 
 namespace Tests
@@ -168,7 +169,7 @@ namespace Tests
                 board.MakeMove("c1-f4");
                 board.MakeMove("c8-f5");
                 board.MakeMove("d1-d2");
-                board.MakeMove("d7-d6");
+                board.MakeMove("d8-d7");
                 board.MakeMove("g2-g3");
             }
 
