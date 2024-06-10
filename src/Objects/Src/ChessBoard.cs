@@ -200,6 +200,7 @@ namespace Objects.Src
 
         public void SetFigure(Figure figure, string title)
         {
+            figure.SetField(title);
             GetField(title).SetFigure(figure);
         }
 
@@ -250,5 +251,6 @@ namespace Objects.Src
             SetFigure(rock, $"d{row}");
             return true;
         }
+
     }
 }

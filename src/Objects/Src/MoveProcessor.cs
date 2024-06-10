@@ -3,13 +3,11 @@ using System.Linq;
 
 namespace Objects.Src
 {
-    internal class MoveProcessor
+    public class MoveProcessor
     {
-        private readonly ChessBoard _board;
-
-        public MoveProcessor(ChessBoard board)
+        private MoveProcessor()
         {
-            _board = board;
+
         }
 
         public bool MakeMove(string move)
@@ -97,6 +95,16 @@ namespace Objects.Src
                     return titleTo == 'f' || titleTo == 'h';
             }
             return titleTo == 'g';
+        }
+
+        public static bool IsCheckState(ChessBoard board)
+        {
+            return false;
+        }
+
+        public static bool IsMateState(ChessBoard board)
+        {
+            return false;
         }
 
     }
