@@ -1,28 +1,54 @@
 ﻿using System;
-using System.Linq;
 
 namespace Objects.Src
 {
     public class MoveProcessor
     {
-        private MoveProcessor()
-        {
+        private readonly ChessBoard _board;
+        private  bool _isWhiteMove = true;
+        private bool _isCheckState = false;
 
+        public MoveProcessor(ChessBoard board)
+        {
+            _board = board;
         }
 
         public bool MakeMove(string move)
         {
-            if (!IsValidMove(move)) return false;
+            // is castle
+            if (move.Contains("0"))
+            {
+                var isProcessed = ProcessCastle(move, _isWhiteMove);
+                _isWhiteMove = !_isWhiteMove;
+                return isProcessed;
+            }
 
-            return true;
+            var divider = move.Contains("-") ? "-" : "x";
+            var items = move.Split(divider);
+            var titleFrom = items[0];
+            var titleTo = items[1];
+            if (!_board.GetField(titleFrom).HasFigure()) return false;
+            var figure = _board.GetField(titleFrom).Figure;
+            var figureTo = _board.GetField(titleTo).Figure;
+            // same color occupation
+            if (figureTo != null && figureTo.IsWhitePeace == figure.IsWhitePeace) return false;
+
+            var isCapture = figureTo != null && figureTo.IsWhitePeace != figure.IsWhitePeace;
+
+            var isPossibleMove = IsPossibleMove(titleFrom, titleTo, figure, isCapture);
+            if (isPossibleMove)
+            {
+                if (figure.IsPawn() && _board.GetField(titleTo).HasFigure() && titleFrom[0] == titleTo[0]) return false;
+                _board.SetFigure(figure, titleTo);
+                _board.RemoveFigure(titleFrom);
+                _isWhiteMove = !_isWhiteMove;
+                return true;
+            }
+            else return false;
+
         }
 
-
-        private bool IsCastle(string move) => move.Contains("0");
-
-        private bool IsValidMove(string move) => move.Count(t => t == '-') == 1;
-
-        public static bool IsPossibleMove(string titleFrom, string titleTo, Figure figure, bool isCaptureMove)
+        public bool IsPossibleMove(string titleFrom, string titleTo, Figure figure, bool isCaptureMove)
         {
             var rowName = titleFrom[0];
             var rowMameTo = titleTo[0];
@@ -97,14 +123,57 @@ namespace Objects.Src
             return titleTo == 'g';
         }
 
-        public static bool IsCheckState(ChessBoard board)
+        public bool IsCheckState()
+        {
+            return _isCheckState;
+        }
+
+        public bool IsMateState()
         {
             return false;
         }
 
-        public static bool IsMateState(ChessBoard board)
+        private bool ProcessCastle(string move, bool isWhiteMove)
         {
-            return false;
+            var items = move.Split("-");
+            if (items.Length < 2 || items.Length > 3) throw new ArgumentException($"Unexpected move in castle: {move}");
+            // castle king side
+            var row = isWhiteMove ? "1" : "8";
+            var e = _board.GetField($"e{row}");
+
+            if (items.Length == 2)
+            {
+                var f = _board.GetField($"f{row}");
+                var g = _board.GetField($"g{row}");
+                var h = _board.GetField($"h{row}");
+                if (!e.HasFigure() || !e.Figure.IsKing()) return false;
+                if (!h.HasFigure() || !h.Figure.IsRook()) return false;
+                if (g.HasFigure() || f.HasFigure()) return false;
+                var rockPeace = h.Figure;
+                var kingPeace = e.Figure;
+                _board.RemoveFigure($"e{row}");
+                _board.RemoveFigure($"h{row}");
+                _board.SetFigure(kingPeace, $"g{row}");
+                _board.SetFigure(rockPeace, $"f{row}");
+                return true;
+
+            }
+            // castle queen side
+
+            var d = _board.GetField($"d{row}");
+            var c = _board.GetField($"c{row}");
+            var b = _board.GetField($"b{row}");
+            var a = _board.GetField($"a{row}");
+            if (!e.HasFigure() || !e.Figure.IsKing()) return false;
+            if (!a.HasFigure() || !a.Figure.IsRook()) return false;
+            if (d.HasFigure() || c.HasFigure() || b.HasFigure()) return false;
+            var rock = a.Figure;
+            var king = e.Figure;
+            _board.RemoveFigure($"e{row}");
+            _board.RemoveFigure($"a{row}");
+            _board.SetFigure(king, $"c{row}");
+            _board.SetFigure(rock, $"d{row}");
+            return true;
         }
 
     }

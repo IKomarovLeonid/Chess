@@ -9,6 +9,7 @@ namespace Tests
         public void Setup()
         {
             board = ChessBoard.CreateOnlyBoard();
+            moveProcessor = new MoveProcessor(board);
         }
 
 
@@ -32,7 +33,7 @@ namespace Tests
 
             board.SetFigure(new Figure(FigureType.Knight, true), moveItems[0]);
 
-            var result = board.MakeMove(move);
+            var result = moveProcessor.MakeMove(move);
 
             var fieldInitialAfterMove = board.GetField(moveItems[0]);
             var fieldAfterMove = board.GetField(moveItems[1]);
@@ -56,7 +57,7 @@ namespace Tests
             var moveItems = move.Split('-');
             board.SetFigure(new Figure(FigureType.Bishop, true), moveItems[0]);
 
-            var result = board.MakeMove(move);
+            var result = moveProcessor.MakeMove(move);
 
             var fieldInitialAfterMove = board.GetField(moveItems[0]);
             var fieldAfterMove = board.GetField(moveItems[1]);
@@ -79,7 +80,7 @@ namespace Tests
 
             board.SetFigure(new Figure(FigureType.Knight, true), moveItems[0]);
 
-            var result = board.MakeMove(move);
+            var result = moveProcessor.MakeMove(move);
 
             var fieldInitialAfterMove = board.GetField(moveItems[0]);
             var fieldAfterMove = board.GetField(moveItems[1]);
@@ -103,7 +104,7 @@ namespace Tests
             var moveItems = move.Split('-');
             board.SetFigure(new Figure(FigureType.Rook, true), moveItems[0]);
 
-            var result = board.MakeMove(move);
+            var result = moveProcessor.MakeMove(move);
 
             var fieldInitialAfterMove = board.GetField(moveItems[0]);
             var fieldAfterMove = board.GetField(moveItems[1]);
@@ -130,7 +131,7 @@ namespace Tests
             var moveItems = move.Split('-');
             board.SetFigure(new Figure(FigureType.Queen, true), moveItems[0]);
 
-            var result = board.MakeMove(move);
+            var result = moveProcessor.MakeMove(move);
 
             var fieldInitialAfterMove = board.GetField(moveItems[0]);
             var fieldAfterMove = board.GetField(moveItems[1]);
@@ -157,7 +158,7 @@ namespace Tests
             var moveItems = move.Split('-');
             board.SetFigure(new Figure(FigureType.King, true), moveItems[0]);
 
-            var result = board.MakeMove(move);
+            var result = moveProcessor.MakeMove(move);
 
             var fieldInitialAfterMove = board.GetField(moveItems[0]);
             var fieldAfterMove = board.GetField(moveItems[1]);
@@ -177,7 +178,7 @@ namespace Tests
             board.SetFigure(new Figure(FigureType.Pawn, true), "d3");
             board.SetFigure(new Figure(FigureType.Pawn, false), "d4");
 
-            var result = board.MakeMove("d3-d4");
+            var result = moveProcessor.MakeMove("d3-d4");
 
             var d3 = board.GetField("d3");
             var d4 = board.GetField("d4");

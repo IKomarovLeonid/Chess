@@ -7,8 +7,6 @@ namespace Objects.Src
     {
         private Field[,] data = new Field[8, 8];
 
-        private bool isWhiteMove = true;
-
         private ChessBoard() {
             
         }
@@ -165,91 +163,14 @@ namespace Objects.Src
             return sb.ToString();
         }
 
-        public bool MakeMove(string move) {
-            // is castle
-            if (move.Contains("0")) {
-                var isProcessed = this.ProcessCastle(move, this.isWhiteMove);
-                if(isProcessed) this.isWhiteMove = ! this.isWhiteMove;
-                return isProcessed;
-            }
-
-            var divider = move.Contains("-") ? "-" : "x";
-            var items = move.Split(divider);
-            var titleFrom = items[0];
-            var titleTo = items[1];
-            if (!GetField(titleFrom).HasFigure()) return false;
-            var figure = GetField(titleFrom).Figure;
-            var figureTo = GetField(titleTo).Figure;
-            // same color occupation
-            if (figureTo != null && figureTo.IsWhitePeace == figure.IsWhitePeace) return false;
-
-            var isCapture = figureTo != null && figureTo.IsWhitePeace != figure.IsWhitePeace;
-
-            var isPossibleMove = MoveProcessor.IsPossibleMove(titleFrom, titleTo, figure, isCapture);
-            if (isPossibleMove)
-            {
-                if(figure.IsPawn() && GetField(titleTo).HasFigure() && titleFrom[0] == titleTo[0]) return false;
-                SetFigure(figure, titleTo);
-                RemoveFigure(titleFrom);
-                this.isWhiteMove = !this.isWhiteMove;
-                return true;
-            }
-            else return false;
-
-        }
-
         public void SetFigure(Figure figure, string title)
         {
-            figure.SetField(title);
             GetField(title).SetFigure(figure);
         }
 
         public void RemoveFigure(string title)
         {
             if(GetField(title).HasFigure()) GetField(title).RemoveFigure();
-        }
-
-        private bool ProcessCastle(string move, bool isWhiteMove)
-        {
-            var items = move.Split("-");
-            if (items.Length < 2 || items.Length > 3) throw new ArgumentException($"Unexpected move in castle: {move}");
-            // castle king side
-            var row = isWhiteMove ? "1" : "8";
-            var e = GetField($"e{row}");
-
-            if (items.Length == 2)
-            {
-                var f = GetField($"f{row}");
-                var g = GetField($"g{row}");
-                var h = GetField($"h{row}");
-                if (!e.HasFigure() || !e.Figure.IsKing()) return false;
-                if (!h.HasFigure() || !h.Figure.IsRook()) return false;
-                if (g.HasFigure() || f.HasFigure()) return false;
-                var rockPeace = h.Figure;
-                var kingPeace = e.Figure;
-                RemoveFigure($"e{row}");
-                RemoveFigure($"h{row}");
-                SetFigure(kingPeace,$"g{row}");
-                SetFigure(rockPeace, $"f{row}");
-                return true;
-
-            }
-            // castle queen side
-
-            var d = GetField($"d{row}");
-            var c = GetField($"c{row}");
-            var b = GetField($"b{row}");
-            var a = GetField($"a{row}");
-            if (!e.HasFigure() || !e.Figure.IsKing()) return false;
-            if (!a.HasFigure() || !a.Figure.IsRook()) return false;
-            if (d.HasFigure() || c.HasFigure() || b.HasFigure()) return false;
-            var rock = a.Figure;
-            var king = e.Figure;
-            RemoveFigure($"e{row}");
-            RemoveFigure($"a{row}");
-            SetFigure(king, $"c{row}");
-            SetFigure(rock, $"d{row}");
-            return true;
         }
 
     }

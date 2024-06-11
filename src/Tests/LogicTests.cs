@@ -9,6 +9,7 @@ namespace Tests
         public void Setup()
         {
             board = ChessBoard.CreateOnlyBoard();
+            moveProcessor = new MoveProcessor(board);
         }
 
         [Test]
@@ -17,7 +18,7 @@ namespace Tests
             board.SetFigure(new Figure(FigureType.Knight, true), "e4");
             board.SetFigure(new Figure(FigureType.King, false), "d6");
 
-            var isCheck = MoveProcessor.IsCheckState(board);
+            var isCheck = moveProcessor.IsCheckState();
 
             Assert.IsTrue(isCheck);
         }
@@ -28,7 +29,7 @@ namespace Tests
             board.SetFigure(new Figure(FigureType.Knight, true), "e4");
             board.SetFigure(new Figure(FigureType.King, true), "d6");
 
-            var isCheck = MoveProcessor.IsCheckState(board);
+            var isCheck = moveProcessor.IsCheckState();
 
             Assert.False(isCheck);
         }
@@ -44,8 +45,8 @@ namespace Tests
             board.SetFigure(new Figure(FigureType.Pawn, false), "f7");
             board.SetFigure(new Figure(FigureType.Pawn, false), "h7");
 
-            var isCheck = MoveProcessor.IsCheckState(board);
-            var isMate = MoveProcessor.IsMateState(board);
+            var isCheck = moveProcessor.IsCheckState();
+            var isMate = moveProcessor.IsMateState();
 
             Assert.Multiple(() =>
             {
@@ -66,8 +67,8 @@ namespace Tests
             board.SetFigure(new Figure(FigureType.Pawn, false), "h7");
             board.SetFigure(new Figure(FigureType.Knight, false), "g6"); // f8 -> not mate
 
-            var isCheck = MoveProcessor.IsCheckState(board);
-            var isMate = MoveProcessor.IsMateState(board);
+            var isCheck = moveProcessor.IsCheckState();
+            var isMate = moveProcessor.IsMateState();
 
             Assert.Multiple(() =>
             {

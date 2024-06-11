@@ -6,8 +6,6 @@
 
         public readonly bool IsWhitePeace;
 
-        public string CurrentField { get; private set; }
-
         public Figure(FigureType type, bool isWhitePeace)
         {
             this.Type = type;
@@ -27,8 +25,6 @@
         public bool IsKnight() => this.Type == FigureType.Knight;
 
         public FigureType GetFigureType() => this.Type;
-
-        public void SetField(string field) { this.CurrentField = field; }
 
     }
 

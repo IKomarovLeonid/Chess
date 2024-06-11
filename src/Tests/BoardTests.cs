@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using NUnit.Framework.Interfaces;
 using Objects.Src;
 
 namespace Tests
@@ -10,6 +9,7 @@ namespace Tests
         public void Setup()
         {
             board = ChessBoard.CreateInitial();
+            moveProcessor = new MoveProcessor(board);
         }
 
 
@@ -44,7 +44,7 @@ namespace Tests
         {
             var moveItems = move.Split('-'); 
 
-            var isSuccess = board.MakeMove(move);
+            var isSuccess = moveProcessor.MakeMove(move);
 
             Assert.Multiple(() =>
             {
@@ -67,7 +67,7 @@ namespace Tests
             var fieldInitial = board.GetField(moveItems[0]);
             var fieldAfter = board.GetField(moveItems[1]);
 
-            var isSuccess = board.MakeMove(move);
+            var isSuccess = moveProcessor.MakeMove(move);
 
             var fieldNow = board.GetField(moveItems[0]);
             var fieldAfterNow = board.GetField(moveItems[1]);
@@ -85,9 +85,9 @@ namespace Tests
         public void Board_PawnCapture_Success()
         {
             var figure = board.GetField("e2").Figure;
-            board.MakeMove("e2-e4");
-            board.MakeMove("d7-d5");
-            var isSuccess = board.MakeMove("e4xd5");
+            moveProcessor.MakeMove("e2-e4");
+            moveProcessor.MakeMove("d7-d5");
+            var isSuccess = moveProcessor.MakeMove("e4xd5");
             var figureNow = board.GetField("d5").Figure;
 
             Assert.Multiple(() =>
@@ -105,26 +105,26 @@ namespace Tests
         {
             if (whitePeacesScenario)
             {
-                board.MakeMove("e2-e4");
-                board.MakeMove("e7-e5");
-                board.MakeMove("g1-f3");
-                board.MakeMove("b8-c6");
-                board.MakeMove("f1-c4");
-                board.MakeMove("d7-d6");
+                moveProcessor.MakeMove("e2-e4");
+                moveProcessor.MakeMove("e7-e5");
+                moveProcessor.MakeMove("g1-f3");
+                moveProcessor.MakeMove("b8-c6");
+                moveProcessor.MakeMove("f1-c4");
+                moveProcessor.MakeMove("d7-d6");
             }
             else
             {
-                board.MakeMove("e2-e4");
-                board.MakeMove("e7-e5");
-                board.MakeMove("g1-f3");
-                board.MakeMove("g8-f6");
-                board.MakeMove("f1-c4");
-                board.MakeMove("f8-c5");
-                board.MakeMove("0-0");
+                moveProcessor.MakeMove("e2-e4");
+                moveProcessor.MakeMove("e7-e5");
+                moveProcessor.MakeMove("g1-f3");
+                moveProcessor.MakeMove("g8-f6");
+                moveProcessor.MakeMove("f1-c4");
+                moveProcessor.MakeMove("f8-c5");
+                moveProcessor.MakeMove("0-0");
             }
 
             // act
-            var result = board.MakeMove(move);
+            var result = moveProcessor.MakeMove(move);
             var row = whitePeacesScenario ? "1" : "8";
             // assert
             var g = board.GetField($"g{row}");
@@ -151,30 +151,30 @@ namespace Tests
         {
             if (isWhileScenario)
             {
-                board.MakeMove("d2-d4");
-                board.MakeMove("d7-d5");
-                board.MakeMove("b1-c3");
-                board.MakeMove("b8-c6");
-                board.MakeMove("c1-f4");
-                board.MakeMove("e7-e6");
-                board.MakeMove("d1-d2");
-                board.MakeMove("g8-f6");
+                moveProcessor.MakeMove("d2-d4");
+                moveProcessor.MakeMove("d7-d5");
+                moveProcessor.MakeMove("b1-c3");
+                moveProcessor.MakeMove("b8-c6");
+                moveProcessor.MakeMove("c1-f4");
+                moveProcessor.MakeMove("e7-e6");
+                moveProcessor.MakeMove("d1-d2");
+                moveProcessor.MakeMove("g8-f6");
             }
             else
             {
-                board.MakeMove("d2-d4");
-                board.MakeMove("d7-d5");
-                board.MakeMove("b1-c3");
-                board.MakeMove("b8-c6");
-                board.MakeMove("c1-f4");
-                board.MakeMove("c8-f5");
-                board.MakeMove("d1-d2");
-                board.MakeMove("d8-d7");
-                board.MakeMove("g2-g3");
+                moveProcessor.MakeMove("d2-d4");
+                moveProcessor.MakeMove("d7-d5");
+                moveProcessor.MakeMove("b1-c3");
+                moveProcessor.MakeMove("b8-c6");
+                moveProcessor.MakeMove("c1-f4");
+                moveProcessor.MakeMove("c8-f5");
+                moveProcessor.MakeMove("d1-d2");
+                moveProcessor.MakeMove("d8-d7");
+                moveProcessor.MakeMove("g2-g3");
             }
 
             // act
-            var result = board.MakeMove(move);
+            var result = moveProcessor.MakeMove(move);
             var row = isWhileScenario ? "1" : "8";
             // assert
             var c = board.GetField($"c{row}");
