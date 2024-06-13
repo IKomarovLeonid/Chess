@@ -194,5 +194,31 @@ namespace Tests
                 Assert.True(d3.Figure.IsWhitePeace, "d4 pawn white");
             });
         }
+
+        [TestCase("e4-e5")]
+        [TestCase("e4-d5")]
+        [TestCase("e4-f5")]
+        [TestCase("e6-f5")]
+        [TestCase("e6-d5")]
+        [TestCase("e6-e5")]
+        [Description("Success king move hovewer can't be processed if other king after move becomes closer")]
+        public void Move_King_NearOtherKing_Failed(string move)
+        {
+            var moveItems = move.Split('-');
+            board.SetFigure(new Figure(FigureType.King, true), "e4");
+            board.SetFigure(new Figure(FigureType.King, false), "e6");
+
+            var result = moveProcessor.MakeMove(move);
+
+            var fieldInitialAfterMove = board.GetField(moveItems[0]);
+            var fieldAfterMove = board.GetField(moveItems[1]);
+
+            Assert.Multiple(() =>
+            {
+                Assert.False(result, "Move was NOT processed");
+                Assert.True(fieldInitialAfterMove.HasFigure(), "Initial field is not EMPTY after move");
+                Assert.False(fieldAfterMove.HasFigure(), "Target field is empty after move");
+            });
+        }
     }
 }

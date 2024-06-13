@@ -56,6 +56,26 @@ namespace Tests
         }
 
         [Test]
+        public void SimpleDrawState_Success()
+        {
+            // check here
+            board.SetFigure(new Figure(FigureType.King, true), "b8");
+            // black peaces
+            board.SetFigure(new Figure(FigureType.King, false), "g8");
+
+            var isCheck = moveProcessor.IsCheckState();
+            var isMate = moveProcessor.IsMateState();
+            var isDraw = moveProcessor.IsDraw();
+
+            Assert.Multiple(() =>
+            {
+                Assert.IsFalse(isCheck);
+                Assert.IsFalse(isMate);
+                Assert.IsTrue(isDraw);
+            });
+        }
+
+        [Test]
         public void NotMate_CanCover()
         {
             // check here

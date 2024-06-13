@@ -133,6 +133,11 @@ namespace Objects.Src
             return false;
         }
 
+        public bool IsDraw()
+        {
+            return false;
+        }
+
         private bool ProcessCastle(string move, bool isWhiteMove)
         {
             var items = move.Split("-");
