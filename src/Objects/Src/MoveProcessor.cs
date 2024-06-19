@@ -39,6 +39,12 @@ namespace Objects.Src
             if (isPossibleMove)
             {
                 if (figure.IsPawn() && _board.GetField(titleTo).HasFigure() && titleFrom[0] == titleTo[0]) return false;
+                if(figure.IsPawn() && titleTo.Contains("8") || titleTo.Contains("1"))
+                {
+                    _board.RemoveFigure(titleFrom);
+                    _board.SetFigure(new Figure(FigureType.Queen, figure.IsWhitePeace), titleTo);
+                    return true;
+                }
                 _board.SetFigure(figure, titleTo);
                 _board.RemoveFigure(titleFrom);
                 _isWhiteMove = !_isWhiteMove;
@@ -180,6 +186,5 @@ namespace Objects.Src
             _board.SetFigure(rock, $"d{row}");
             return true;
         }
-
     }
 }

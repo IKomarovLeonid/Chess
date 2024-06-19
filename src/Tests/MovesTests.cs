@@ -220,5 +220,28 @@ namespace Tests
                 Assert.False(fieldAfterMove.HasFigure(), "Target field is empty after move");
             });
         }
+
+        [TestCase("e7-e8", true)]
+        [TestCase("e2-e1", false)]
+        [Description("Promote pawn to queen when last rank reached")]
+        public void Move_Pawn_LastRank(string move, bool isWhitePawn)
+        {
+            var moveItems = move.Split('-');
+            board.SetFigure(new Figure(FigureType.Pawn, isWhitePawn), moveItems[0]);
+
+            var result = moveProcessor.MakeMove(move);
+
+            var fieldInitialAfterMove = board.GetField(moveItems[0]);
+            var fieldAfterMove = board.GetField(moveItems[1]);
+
+            Assert.Multiple(() =>
+            {
+                Assert.True(result, "Move was processed");
+                Assert.False(fieldInitialAfterMove.HasFigure(), "Initial field is EMPTY after move");
+                Assert.True(fieldAfterMove.HasFigure(), "Target field has figure");
+                Assert.True(fieldAfterMove.Figure.IsQueen(), "Pawn becomes quenn");
+                Assert.That(fieldAfterMove.Figure.IsWhitePeace, Is.EqualTo(isWhitePawn), "Queen has color same as pawn");
+            });
+        }
     }
 }
