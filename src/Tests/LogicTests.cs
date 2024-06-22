@@ -96,5 +96,31 @@ namespace Tests
                 Assert.IsFalse(isMate);
             });
         }
+
+        [TestCase("e5", "h1", "0-0")]
+        [TestCase("f5", "h1", "0-0")]
+        [TestCase("g5", "h1", "0-0")]
+        [TestCase("d5", "a1", "0-0-0")]
+        [TestCase("c5", "a1", "0-0-0")]
+        [TestCase("b5", "a1", "0-0-0")]
+        [Description("Unable to castle if opponent's figure checks or attacks fields")]
+        public void Can_Not_CastleUnderCheck(string blackPosition, string whiteRockPosition, string move)
+        {
+            board.SetFigure(new Figure(FigureType.King, true), "e1");
+            board.SetFigure(new Figure(FigureType.Rook, true), whiteRockPosition);
+            // black makes check
+            board.SetFigure(new Figure(FigureType.Rook, false), blackPosition);
+
+            var result = moveProcessor.MakeMove(move);
+            Assert.Multiple(() =>
+            {
+                Assert.False(result, "Move is not possible");
+                Assert.IsTrue(board.GetField("e1").HasFigure());
+                Assert.IsTrue(board.GetField("h1").HasFigure());
+                Assert.IsTrue(board.GetField("e1").Figure.IsKing());
+                Assert.IsTrue(board.GetField("h1").Figure.IsRook());
+            });
+        }
+
     }
 }
