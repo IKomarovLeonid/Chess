@@ -114,11 +114,11 @@ namespace Tests
             var result = moveProcessor.MakeMove(move);
             Assert.Multiple(() =>
             {
-                Assert.False(result, "Move is not possible");
-                Assert.IsTrue(board.GetField("e1").HasFigure());
-                Assert.IsTrue(board.GetField("h1").HasFigure());
-                Assert.IsTrue(board.GetField("e1").Figure.IsKing());
-                Assert.IsTrue(board.GetField("h1").Figure.IsRook());
+                Assert.That(result, Is.False, "Move is not possible");
+                Assert.That(board.GetField("e1").HasFigure(), Is.True);
+                Assert.That(board.GetField("h1").HasFigure(), Is.True);
+                Assert.That(board.GetField("e1").Figure.IsKing(), Is.True);
+                Assert.That(board.GetField("h1").Figure.IsRook(), Is.True);
             });
         }
 
