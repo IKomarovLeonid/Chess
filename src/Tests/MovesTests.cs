@@ -215,9 +215,9 @@ namespace Tests
 
             Assert.Multiple(() =>
             {
-                Assert.False(result, "Move was NOT processed");
-                Assert.True(fieldInitialAfterMove.HasFigure(), "Initial field is not EMPTY after move");
-                Assert.False(fieldAfterMove.HasFigure(), "Target field is empty after move");
+                Assert.That(result, Is.False, "Move was NOT processed");
+                Assert.That(fieldInitialAfterMove.HasFigure(), Is.True, "Initial field is not EMPTY after move");
+                Assert.That(fieldAfterMove.HasFigure(), Is.False, "Target field is empty after move");
             });
         }
 
