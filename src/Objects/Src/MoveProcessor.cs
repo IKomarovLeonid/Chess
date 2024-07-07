@@ -63,7 +63,7 @@ namespace Objects.Src
             var isSameRowName = rowName == rowMameTo;
             var diff = Math.Abs(indexRowTo - indexRowFrom);
             var rowsDiff = Math.Abs(rowName - rowMameTo);
-            var isAdjanced = IsAdjancedTitle(rowName, rowMameTo);
+            var isAdjanced = IsAdjancedTitles(rowName, rowMameTo, indexRowFrom, indexRowTo);
 
             switch (figure.GetFigureType())
             {
@@ -107,26 +107,26 @@ namespace Objects.Src
             throw new ArgumentException($"Unknown figure '{figure.GetFigureType()}'");
         }
 
-        private static bool IsAdjancedTitle(char title, char titleTo)
+        private static bool IsAdjancedTitles(char title, char titleTo, int rowFrom, int rowTo)
         {
             switch (title)
             {
                 case 'a':
-                    return titleTo == 'b';
+                    return titleTo == 'b' || titleTo == 'a' && Math.Abs(rowTo - rowFrom) <= 1;
                 case 'b':
-                    return titleTo == 'c' || titleTo == 'a';
+                    return titleTo == 'c' || titleTo == 'a' || titleTo == 'b' && Math.Abs(rowTo - rowFrom) <= 1;
                 case 'c':
-                    return titleTo == 'b' || titleTo == 'd';
+                    return titleTo == 'b' || titleTo == 'd' || titleTo == 'c' && Math.Abs(rowTo - rowFrom) <= 1;
                 case 'd':
-                    return titleTo == 'c' || titleTo == 'e';
+                    return titleTo == 'c' || titleTo == 'e' || titleTo == 'd' && Math.Abs(rowTo - rowFrom) <= 1;
                 case 'e':
-                    return titleTo == 'd' || titleTo == 'f';
+                    return titleTo == 'd' || titleTo == 'f' || titleTo == 'e' && Math.Abs(rowTo - rowFrom) <= 1;
                 case 'f':
-                    return titleTo == 'e' || titleTo == 'g';
+                    return titleTo == 'e' || titleTo == 'g' || titleTo == 'f' && Math.Abs(rowTo - rowFrom) <= 1;
                 case 'g':
-                    return titleTo == 'f' || titleTo == 'h';
+                    return titleTo == 'f' || titleTo == 'h' || titleTo == 'g' && Math.Abs(rowTo - rowFrom) <= 1;
             }
-            return titleTo == 'g';
+            return titleTo == 'g' || titleTo == 'h' && Math.Abs(rowTo - rowFrom) <= 1;
         }
 
         public bool IsCheckState()
