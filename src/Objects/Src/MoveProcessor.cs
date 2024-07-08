@@ -1,12 +1,13 @@
 ﻿using System;
+using Objects.Src;
 
-namespace Objects.Src
+namespace Objects
 {
     public class MoveProcessor
     {
         private readonly ChessBoard _board;
         private  bool _isWhiteMove = true;
-        private bool _isCheckState = false;
+        private readonly bool _isCheckState = false;
 
         public MoveProcessor(ChessBoard board)
         {
@@ -15,7 +16,7 @@ namespace Objects.Src
 
         public bool MakeMove(string move)
         {
-            // is castle
+            // is castled
             if (move.Contains("0"))
             {
                 var isProcessed = ProcessCastle(move, _isWhiteMove);
@@ -36,21 +37,18 @@ namespace Objects.Src
             var isCapture = figureTo != null && figureTo.IsWhitePeace != figure.IsWhitePeace;
 
             var isPossibleMove = IsPossibleMove(titleFrom, titleTo, figure, isCapture);
-            if (isPossibleMove)
+            if (!isPossibleMove) return false;
+            if (figure.IsPawn() && _board.GetField(titleTo).HasFigure() && titleFrom[0] == titleTo[0]) return false;
+            if(figure.IsPawn() && titleTo.Contains("8") || titleTo.Contains("1"))
             {
-                if (figure.IsPawn() && _board.GetField(titleTo).HasFigure() && titleFrom[0] == titleTo[0]) return false;
-                if(figure.IsPawn() && titleTo.Contains("8") || titleTo.Contains("1"))
-                {
-                    _board.RemoveFigure(titleFrom);
-                    _board.SetFigure(new Figure(FigureType.Queen, figure.IsWhitePeace), titleTo);
-                    return true;
-                }
-                _board.SetFigure(figure, titleTo);
                 _board.RemoveFigure(titleFrom);
-                _isWhiteMove = !_isWhiteMove;
+                _board.SetFigure(new Figure(FigureType.Queen, figure.IsWhitePeace), titleTo);
                 return true;
             }
-            else return false;
+            _board.SetFigure(figure, titleTo);
+            _board.RemoveFigure(titleFrom);
+            _isWhiteMove = !_isWhiteMove;
+            return true;
 
         }
 

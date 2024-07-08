@@ -1,4 +1,5 @@
-﻿using Objects.Src;
+﻿using Objects;
+using Objects.Src;
 
 namespace Tests
 {
