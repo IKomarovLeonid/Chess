@@ -1,30 +1,30 @@
-﻿namespace Objects.Src
+﻿namespace Objects
 {
     public class Figure
     {
-        private readonly FigureType Type;
+        private readonly FigureType _type;
 
         public readonly bool IsWhitePeace;
 
         public Figure(FigureType type, bool isWhitePeace)
         {
-            this.Type = type;
+            this._type = type;
             this.IsWhitePeace = isWhitePeace;
         }
 
-        public bool IsPawn() => this.Type == FigureType.Pawn;
+        public bool IsPawn() => this._type == FigureType.Pawn;
 
-        public bool IsBishop() => this.Type == FigureType.Bishop;
+        public bool IsBishop() => this._type == FigureType.Bishop;
 
-        public bool IsRook() => this.Type == FigureType.Rook;
+        public bool IsRook() => this._type == FigureType.Rook;
 
-        public bool IsQueen() => this.Type == FigureType.Queen;
+        public bool IsQueen() => this._type == FigureType.Queen;
 
-        public bool IsKing() => this.Type == FigureType.King;
+        public bool IsKing() => this._type == FigureType.King;
 
-        public bool IsKnight() => this.Type == FigureType.Knight;
+        public bool IsKnight() => this._type == FigureType.Knight;
 
-        public FigureType GetFigureType() => this.Type;
+        public FigureType GetFigureType() => this._type;
 
     }
 
