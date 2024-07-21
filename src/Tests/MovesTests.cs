@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using Objects;
-using Objects.Src;
 
 namespace Tests
 {

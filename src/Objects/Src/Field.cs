@@ -1,16 +1,16 @@
-﻿namespace Objects.Src
+﻿namespace Objects
 {
     public class Field
     {
         public readonly string Name;
 
-        private readonly bool isWhite;
+        private readonly bool _isWhite;
 
         public Figure Figure { get; private set; }
 
         public Field(string name, bool isWhite, Figure figure = null)
         {
-            this.isWhite = isWhite;
+            this._isWhite = isWhite;
             Name = name;
             Figure = figure;
         }
@@ -27,7 +27,7 @@
 
         public bool HasFigure() { return this.Figure != null; }
 
-        public bool IsWhiteField() { return this.isWhite; }
+        public bool IsWhiteField() { return this._isWhite; }
 
     }
 }
