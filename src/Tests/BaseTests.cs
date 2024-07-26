@@ -4,7 +4,7 @@ namespace Tests
 {
     internal class BaseTests
     {
-        protected ChessBoard board;
-        protected MoveProcessor moveProcessor;
+        protected ChessBoard Board;
+        protected MoveProcessor MoveProcessor;
     }
 }

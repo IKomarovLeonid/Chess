@@ -8,8 +8,8 @@ namespace Tests
         [SetUp]
         public void Setup()
         {
-            board = ChessBoard.CreateInitial();
-            moveProcessor = new MoveProcessor(board);
+            Board = ChessBoard.CreateInitial();
+            MoveProcessor = new MoveProcessor(Board);
         }
 
 
@@ -19,15 +19,15 @@ namespace Tests
         {
             Assert.Multiple(() =>
             {
-                Assert.That(board.GetField("a1").IsWhiteField, Is.False, "A1 is black field");
-                Assert.That(board.GetField("a1").HasFigure, Is.True, "A1 has rock");
-                Assert.That(board.GetField("e4").IsWhiteField, Is.True, "E4 is white field");
-                Assert.That(board.GetField("e4").HasFigure, Is.False, "E4 has not any figure");
-                Assert.That(board.GetField("d6").HasFigure, Is.False, "D6 has not any figure");
-                Assert.That(board.GetField("g5").HasFigure, Is.False, "G5 has not any figure");
-                Assert.That(board.GetField("a8").IsWhiteField, Is.True, "A8 is white field");
-                Assert.That(board.GetField("d7").HasFigure, Is.True, "d7 has pawn");
-                Assert.That(board.GetField("e8").HasFigure, Is.True, "E8 has king");
+                Assert.That(Board.GetField("a1").IsWhiteField, Is.False, "A1 is black field");
+                Assert.That(Board.GetField("a1").HasFigure, Is.True, "A1 has rock");
+                Assert.That(Board.GetField("e4").IsWhiteField, Is.True, "E4 is white field");
+                Assert.That(Board.GetField("e4").HasFigure, Is.False, "E4 has not any figure");
+                Assert.That(Board.GetField("d6").HasFigure, Is.False, "D6 has not any figure");
+                Assert.That(Board.GetField("g5").HasFigure, Is.False, "G5 has not any figure");
+                Assert.That(Board.GetField("a8").IsWhiteField, Is.True, "A8 is white field");
+                Assert.That(Board.GetField("d7").HasFigure, Is.True, "d7 has pawn");
+                Assert.That(Board.GetField("e8").HasFigure, Is.True, "E8 has king");
             });
         }
 
@@ -44,15 +44,15 @@ namespace Tests
         {
             var moveItems = move.Split('-'); 
 
-            var isSuccess = moveProcessor.MakeMove(move);
+            var isSuccess = MoveProcessor.MakeMove(move);
 
             Assert.Multiple(() =>
             {
                 Assert.That(isSuccess, Is.True, "Move was performed successfully");
-                Assert.That(board.GetField(moveItems[0]).HasFigure, Is.False, "Pawn moved, 'field from' is free now");
-                Assert.That(board.GetField(moveItems[0]).Figure, Is.Null);
-                Assert.That(board.GetField(moveItems[1]).HasFigure, Is.True, "Pawn moved, 'field to' is set");
-                Assert.That(board.GetField(moveItems[1]).Figure.GetFigureType(), Is.EqualTo(figureExpected), "Figure");
+                Assert.That(Board.GetField(moveItems[0]).HasFigure, Is.False, "Pawn moved, 'field from' is free now");
+                Assert.That(Board.GetField(moveItems[0]).Figure, Is.Null);
+                Assert.That(Board.GetField(moveItems[1]).HasFigure, Is.True, "Pawn moved, 'field to' is set");
+                Assert.That(Board.GetField(moveItems[1]).Figure.GetFigureType(), Is.EqualTo(figureExpected), "Figure");
             });
         }
 
@@ -64,13 +64,13 @@ namespace Tests
         {
             var moveItems = move.Split('-');
 
-            var fieldInitial = board.GetField(moveItems[0]);
-            var fieldAfter = board.GetField(moveItems[1]);
+            var fieldInitial = Board.GetField(moveItems[0]);
+            var fieldAfter = Board.GetField(moveItems[1]);
 
-            var isSuccess = moveProcessor.MakeMove(move);
+            var isSuccess = MoveProcessor.MakeMove(move);
 
-            var fieldNow = board.GetField(moveItems[0]);
-            var fieldAfterNow = board.GetField(moveItems[1]);
+            var fieldNow = Board.GetField(moveItems[0]);
+            var fieldAfterNow = Board.GetField(moveItems[1]);
 
             Assert.Multiple(() =>
             {
@@ -84,11 +84,11 @@ namespace Tests
         [Description("Simple valid pawn capture from initial position")]
         public void Board_PawnCapture_Success()
         {
-            var figure = board.GetField("e2").Figure;
-            moveProcessor.MakeMove("e2-e4");
-            moveProcessor.MakeMove("d7-d5");
-            var isSuccess = moveProcessor.MakeMove("e4xd5");
-            var figureNow = board.GetField("d5").Figure;
+            var figure = Board.GetField("e2").Figure;
+            MoveProcessor.MakeMove("e2-e4");
+            MoveProcessor.MakeMove("d7-d5");
+            var isSuccess = MoveProcessor.MakeMove("e4xd5");
+            var figureNow = Board.GetField("d5").Figure;
 
             Assert.Multiple(() =>
             {
@@ -105,32 +105,32 @@ namespace Tests
         {
             if (whitePeacesScenario)
             {
-                moveProcessor.MakeMove("e2-e4");
-                moveProcessor.MakeMove("e7-e5");
-                moveProcessor.MakeMove("g1-f3");
-                moveProcessor.MakeMove("b8-c6");
-                moveProcessor.MakeMove("f1-c4");
-                moveProcessor.MakeMove("d7-d6");
+                MoveProcessor.MakeMove("e2-e4");
+                MoveProcessor.MakeMove("e7-e5");
+                MoveProcessor.MakeMove("g1-f3");
+                MoveProcessor.MakeMove("b8-c6");
+                MoveProcessor.MakeMove("f1-c4");
+                MoveProcessor.MakeMove("d7-d6");
             }
             else
             {
-                moveProcessor.MakeMove("e2-e4");
-                moveProcessor.MakeMove("e7-e5");
-                moveProcessor.MakeMove("g1-f3");
-                moveProcessor.MakeMove("g8-f6");
-                moveProcessor.MakeMove("f1-c4");
-                moveProcessor.MakeMove("f8-c5");
-                moveProcessor.MakeMove("0-0");
+                MoveProcessor.MakeMove("e2-e4");
+                MoveProcessor.MakeMove("e7-e5");
+                MoveProcessor.MakeMove("g1-f3");
+                MoveProcessor.MakeMove("g8-f6");
+                MoveProcessor.MakeMove("f1-c4");
+                MoveProcessor.MakeMove("f8-c5");
+                MoveProcessor.MakeMove("0-0");
             }
 
             // act
-            var result = moveProcessor.MakeMove(move);
+            var result = MoveProcessor.MakeMove(move);
             var row = whitePeacesScenario ? "1" : "8";
             // assert
-            var g = board.GetField($"g{row}");
-            var f = board.GetField($"f{row}");
-            var e = board.GetField($"e{row}");
-            var h = board.GetField($"h{row}");
+            var g = Board.GetField($"g{row}");
+            var f = Board.GetField($"f{row}");
+            var e = Board.GetField($"e{row}");
+            var h = Board.GetField($"h{row}");
 
             Assert.Multiple(() =>
             {
@@ -151,37 +151,37 @@ namespace Tests
         {
             if (isWhileScenario)
             {
-                moveProcessor.MakeMove("d2-d4");
-                moveProcessor.MakeMove("d7-d5");
-                moveProcessor.MakeMove("b1-c3");
-                moveProcessor.MakeMove("b8-c6");
-                moveProcessor.MakeMove("c1-f4");
-                moveProcessor.MakeMove("e7-e6");
-                moveProcessor.MakeMove("d1-d2");
-                moveProcessor.MakeMove("g8-f6");
+                MoveProcessor.MakeMove("d2-d4");
+                MoveProcessor.MakeMove("d7-d5");
+                MoveProcessor.MakeMove("b1-c3");
+                MoveProcessor.MakeMove("b8-c6");
+                MoveProcessor.MakeMove("c1-f4");
+                MoveProcessor.MakeMove("e7-e6");
+                MoveProcessor.MakeMove("d1-d2");
+                MoveProcessor.MakeMove("g8-f6");
             }
             else
             {
-                moveProcessor.MakeMove("d2-d4");
-                moveProcessor.MakeMove("d7-d5");
-                moveProcessor.MakeMove("b1-c3");
-                moveProcessor.MakeMove("b8-c6");
-                moveProcessor.MakeMove("c1-f4");
-                moveProcessor.MakeMove("c8-f5");
-                moveProcessor.MakeMove("d1-d2");
-                moveProcessor.MakeMove("d8-d7");
-                moveProcessor.MakeMove("g2-g3");
+                MoveProcessor.MakeMove("d2-d4");
+                MoveProcessor.MakeMove("d7-d5");
+                MoveProcessor.MakeMove("b1-c3");
+                MoveProcessor.MakeMove("b8-c6");
+                MoveProcessor.MakeMove("c1-f4");
+                MoveProcessor.MakeMove("c8-f5");
+                MoveProcessor.MakeMove("d1-d2");
+                MoveProcessor.MakeMove("d8-d7");
+                MoveProcessor.MakeMove("g2-g3");
             }
 
             // act
-            var result = moveProcessor.MakeMove(move);
+            var result = MoveProcessor.MakeMove(move);
             var row = isWhileScenario ? "1" : "8";
             // assert
-            var c = board.GetField($"c{row}");
-            var d = board.GetField($"d{row}");
-            var e = board.GetField($"e{row}");
-            var a = board.GetField($"a{row}");
-            var b = board.GetField($"b{row}");
+            var c = Board.GetField($"c{row}");
+            var d = Board.GetField($"d{row}");
+            var e = Board.GetField($"e{row}");
+            var a = Board.GetField($"a{row}");
+            var b = Board.GetField($"b{row}");
 
             Assert.Multiple(() =>
             {

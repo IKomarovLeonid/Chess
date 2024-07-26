@@ -8,8 +8,8 @@ namespace Tests
         [SetUp]
         public void Setup()
         {
-            board = ChessBoard.CreateOnlyBoard();
-            moveProcessor = new MoveProcessor(board);
+            Board = ChessBoard.CreateOnlyBoard();
+            MoveProcessor = new MoveProcessor(Board);
         }
 
 
@@ -31,12 +31,12 @@ namespace Tests
         {
             var moveItems = move.Split('-');
 
-            board.SetFigure(new Figure(FigureType.Knight, true), moveItems[0]);
+            Board.SetFigure(new Figure(FigureType.Knight, true), moveItems[0]);
 
-            var result = moveProcessor.MakeMove(move);
+            var result = MoveProcessor.MakeMove(move);
 
-            var fieldInitialAfterMove = board.GetField(moveItems[0]);
-            var fieldAfterMove = board.GetField(moveItems[1]);
+            var fieldInitialAfterMove = Board.GetField(moveItems[0]);
+            var fieldAfterMove = Board.GetField(moveItems[1]);
 
             Assert.Multiple(() =>
             {
@@ -55,12 +55,12 @@ namespace Tests
         public void Move_Bishop_Success(string move)
         {
             var moveItems = move.Split('-');
-            board.SetFigure(new Figure(FigureType.Bishop, true), moveItems[0]);
+            Board.SetFigure(new Figure(FigureType.Bishop, true), moveItems[0]);
 
-            var result = moveProcessor.MakeMove(move);
+            var result = MoveProcessor.MakeMove(move);
 
-            var fieldInitialAfterMove = board.GetField(moveItems[0]);
-            var fieldAfterMove = board.GetField(moveItems[1]);
+            var fieldInitialAfterMove = Board.GetField(moveItems[0]);
+            var fieldAfterMove = Board.GetField(moveItems[1]);
 
             Assert.Multiple(() =>
             {
@@ -78,12 +78,12 @@ namespace Tests
         {
             var moveItems = move.Split('-');
 
-            board.SetFigure(new Figure(FigureType.Knight, true), moveItems[0]);
+            Board.SetFigure(new Figure(FigureType.Knight, true), moveItems[0]);
 
-            var result = moveProcessor.MakeMove(move);
+            var result = MoveProcessor.MakeMove(move);
 
-            var fieldInitialAfterMove = board.GetField(moveItems[0]);
-            var fieldAfterMove = board.GetField(moveItems[1]);
+            var fieldInitialAfterMove = Board.GetField(moveItems[0]);
+            var fieldAfterMove = Board.GetField(moveItems[1]);
 
             Assert.Multiple(() =>
             {
@@ -102,12 +102,12 @@ namespace Tests
         public void Move_Rock_Success(string move)
         {
             var moveItems = move.Split('-');
-            board.SetFigure(new Figure(FigureType.Rook, true), moveItems[0]);
+            Board.SetFigure(new Figure(FigureType.Rook, true), moveItems[0]);
 
-            var result = moveProcessor.MakeMove(move);
+            var result = MoveProcessor.MakeMove(move);
 
-            var fieldInitialAfterMove = board.GetField(moveItems[0]);
-            var fieldAfterMove = board.GetField(moveItems[1]);
+            var fieldInitialAfterMove = Board.GetField(moveItems[0]);
+            var fieldAfterMove = Board.GetField(moveItems[1]);
 
             Assert.Multiple(() =>
             {
@@ -129,12 +129,12 @@ namespace Tests
         public void Move_Queen_Success(string move)
         {
             var moveItems = move.Split('-');
-            board.SetFigure(new Figure(FigureType.Queen, true), moveItems[0]);
+            Board.SetFigure(new Figure(FigureType.Queen, true), moveItems[0]);
 
-            var result = moveProcessor.MakeMove(move);
+            var result = MoveProcessor.MakeMove(move);
 
-            var fieldInitialAfterMove = board.GetField(moveItems[0]);
-            var fieldAfterMove = board.GetField(moveItems[1]);
+            var fieldInitialAfterMove = Board.GetField(moveItems[0]);
+            var fieldAfterMove = Board.GetField(moveItems[1]);
 
             Assert.Multiple(() =>
             {
@@ -156,12 +156,12 @@ namespace Tests
         public void Move_King_Success(string move)
         {
             var moveItems = move.Split('-');
-            board.SetFigure(new Figure(FigureType.King, true), moveItems[0]);
+            Board.SetFigure(new Figure(FigureType.King, true), moveItems[0]);
 
-            var result = moveProcessor.MakeMove(move);
+            var result = MoveProcessor.MakeMove(move);
 
-            var fieldInitialAfterMove = board.GetField(moveItems[0]);
-            var fieldAfterMove = board.GetField(moveItems[1]);
+            var fieldInitialAfterMove = Board.GetField(moveItems[0]);
+            var fieldAfterMove = Board.GetField(moveItems[1]);
 
             Assert.Multiple(() =>
             {
@@ -175,13 +175,13 @@ namespace Tests
         [Description("Pawn can't be moved -> blockade")]
         public void Move_Pawn_Blocade()
         {
-            board.SetFigure(new Figure(FigureType.Pawn, true), "d3");
-            board.SetFigure(new Figure(FigureType.Pawn, false), "d4");
+            Board.SetFigure(new Figure(FigureType.Pawn, true), "d3");
+            Board.SetFigure(new Figure(FigureType.Pawn, false), "d4");
 
-            var result = moveProcessor.MakeMove("d3-d4");
+            var result = MoveProcessor.MakeMove("d3-d4");
 
-            var d3 = board.GetField("d3");
-            var d4 = board.GetField("d4");
+            var d3 = Board.GetField("d3");
+            var d4 = Board.GetField("d4");
 
             Assert.Multiple(() =>
             {
@@ -205,13 +205,13 @@ namespace Tests
         public void Move_King_NearOtherKing_Failed(string move)
         {
             var moveItems = move.Split('-');
-            board.SetFigure(new Figure(FigureType.King, true), "e4");
-            board.SetFigure(new Figure(FigureType.King, false), "e6");
+            Board.SetFigure(new Figure(FigureType.King, true), "e4");
+            Board.SetFigure(new Figure(FigureType.King, false), "e6");
 
-            var result = moveProcessor.MakeMove(move);
+            var result = MoveProcessor.MakeMove(move);
 
-            var fieldInitialAfterMove = board.GetField(moveItems[0]);
-            var fieldAfterMove = board.GetField(moveItems[1]);
+            var fieldInitialAfterMove = Board.GetField(moveItems[0]);
+            var fieldAfterMove = Board.GetField(moveItems[1]);
 
             Assert.Multiple(() =>
             {
@@ -227,12 +227,12 @@ namespace Tests
         public void Move_Pawn_LastRank(string move, bool isWhitePawn)
         {
             var moveItems = move.Split('-');
-            board.SetFigure(new Figure(FigureType.Pawn, isWhitePawn), moveItems[0]);
+            Board.SetFigure(new Figure(FigureType.Pawn, isWhitePawn), moveItems[0]);
 
-            var result = moveProcessor.MakeMove(move);
+            var result = MoveProcessor.MakeMove(move);
 
-            var fieldInitialAfterMove = board.GetField(moveItems[0]);
-            var fieldAfterMove = board.GetField(moveItems[1]);
+            var fieldInitialAfterMove = Board.GetField(moveItems[0]);
+            var fieldAfterMove = Board.GetField(moveItems[1]);
 
             Assert.Multiple(() =>
             {

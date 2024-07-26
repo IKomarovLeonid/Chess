@@ -8,17 +8,17 @@ namespace Tests
         [SetUp]
         public void Setup()
         {
-            board = ChessBoard.CreateOnlyBoard();
-            moveProcessor = new MoveProcessor(board);
+            Board = ChessBoard.CreateOnlyBoard();
+            MoveProcessor = new MoveProcessor(Board);
         }
 
         [Test]
         public void SimpleCheckState()
         {
-            board.SetFigure(new Figure(FigureType.Knight, true), "e4");
-            board.SetFigure(new Figure(FigureType.King, false), "d6");
+            Board.SetFigure(new Figure(FigureType.Knight, true), "e4");
+            Board.SetFigure(new Figure(FigureType.King, false), "d6");
 
-            var isCheck = moveProcessor.IsCheckState();
+            var isCheck = MoveProcessor.IsCheckState();
 
             Assert.IsTrue(isCheck);
         }
@@ -26,10 +26,10 @@ namespace Tests
         [Test]
         public void CheckState_SameColor_NotACheck()
         {
-            board.SetFigure(new Figure(FigureType.Knight, true), "e4");
-            board.SetFigure(new Figure(FigureType.King, true), "d6");
+            Board.SetFigure(new Figure(FigureType.Knight, true), "e4");
+            Board.SetFigure(new Figure(FigureType.King, true), "d6");
 
-            var isCheck = moveProcessor.IsCheckState();
+            var isCheck = MoveProcessor.IsCheckState();
 
             Assert.False(isCheck);
         }
@@ -38,15 +38,15 @@ namespace Tests
         public void SimpleMateState_Success()
         {
             // check here
-            board.SetFigure(new Figure(FigureType.Rook, true), "b8");
+            Board.SetFigure(new Figure(FigureType.Rook, true), "b8");
             // black peaces
-            board.SetFigure(new Figure(FigureType.King, false), "g8");
-            board.SetFigure(new Figure(FigureType.Pawn, false), "g7");
-            board.SetFigure(new Figure(FigureType.Pawn, false), "f7");
-            board.SetFigure(new Figure(FigureType.Pawn, false), "h7");
+            Board.SetFigure(new Figure(FigureType.King, false), "g8");
+            Board.SetFigure(new Figure(FigureType.Pawn, false), "g7");
+            Board.SetFigure(new Figure(FigureType.Pawn, false), "f7");
+            Board.SetFigure(new Figure(FigureType.Pawn, false), "h7");
 
-            var isCheck = moveProcessor.IsCheckState();
-            var isMate = moveProcessor.IsMateState();
+            var isCheck = MoveProcessor.IsCheckState();
+            var isMate = MoveProcessor.IsMateState();
 
             Assert.Multiple(() =>
             {
@@ -59,13 +59,13 @@ namespace Tests
         public void SimpleDrawState_Success()
         {
             // check here
-            board.SetFigure(new Figure(FigureType.King, true), "b8");
+            Board.SetFigure(new Figure(FigureType.King, true), "b8");
             // black peaces
-            board.SetFigure(new Figure(FigureType.King, false), "g8");
+            Board.SetFigure(new Figure(FigureType.King, false), "g8");
 
-            var isCheck = moveProcessor.IsCheckState();
-            var isMate = moveProcessor.IsMateState();
-            var isDraw = moveProcessor.IsDraw();
+            var isCheck = MoveProcessor.IsCheckState();
+            var isMate = MoveProcessor.IsMateState();
+            var isDraw = MoveProcessor.IsDraw();
 
             Assert.Multiple(() =>
             {
@@ -79,16 +79,16 @@ namespace Tests
         public void NotMate_CanCover()
         {
             // check here
-            board.SetFigure(new Figure(FigureType.Rook, true), "b8");
+            Board.SetFigure(new Figure(FigureType.Rook, true), "b8");
             // black peaces
-            board.SetFigure(new Figure(FigureType.King, false), "g8");
-            board.SetFigure(new Figure(FigureType.Pawn, false), "g7");
-            board.SetFigure(new Figure(FigureType.Pawn, false), "f7");
-            board.SetFigure(new Figure(FigureType.Pawn, false), "h7");
-            board.SetFigure(new Figure(FigureType.Knight, false), "g6"); // f8 -> not mate
+            Board.SetFigure(new Figure(FigureType.King, false), "g8");
+            Board.SetFigure(new Figure(FigureType.Pawn, false), "g7");
+            Board.SetFigure(new Figure(FigureType.Pawn, false), "f7");
+            Board.SetFigure(new Figure(FigureType.Pawn, false), "h7");
+            Board.SetFigure(new Figure(FigureType.Knight, false), "g6"); // f8 -> not mate
 
-            var isCheck = moveProcessor.IsCheckState();
-            var isMate = moveProcessor.IsMateState();
+            var isCheck = MoveProcessor.IsCheckState();
+            var isMate = MoveProcessor.IsMateState();
 
             Assert.Multiple(() =>
             {
@@ -106,19 +106,19 @@ namespace Tests
         [Description("Unable to castle if opponent's figure checks or attacks fields")]
         public void Can_Not_CastleUnderCheck(string blackPosition, string whiteRockPosition, string move)
         {
-            board.SetFigure(new Figure(FigureType.King, true), "e1");
-            board.SetFigure(new Figure(FigureType.Rook, true), whiteRockPosition);
+            Board.SetFigure(new Figure(FigureType.King, true), "e1");
+            Board.SetFigure(new Figure(FigureType.Rook, true), whiteRockPosition);
             // black makes check
-            board.SetFigure(new Figure(FigureType.Rook, false), blackPosition);
+            Board.SetFigure(new Figure(FigureType.Rook, false), blackPosition);
 
-            var result = moveProcessor.MakeMove(move);
+            var result = MoveProcessor.MakeMove(move);
             Assert.Multiple(() =>
             {
                 Assert.That(result, Is.False, "Move is not possible");
-                Assert.That(board.GetField("e1").HasFigure(), Is.True);
-                Assert.That(board.GetField("h1").HasFigure(), Is.True);
-                Assert.That(board.GetField("e1").Figure.IsKing(), Is.True);
-                Assert.That(board.GetField("h1").Figure.IsRook(), Is.True);
+                Assert.That(Board.GetField("e1").HasFigure(), Is.True);
+                Assert.That(Board.GetField("h1").HasFigure(), Is.True);
+                Assert.That(Board.GetField("e1").Figure.IsKing(), Is.True);
+                Assert.That(Board.GetField("h1").Figure.IsRook(), Is.True);
             });
         }
 
